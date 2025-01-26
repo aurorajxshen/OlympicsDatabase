@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athletes Data Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='athlete.css') }}">
+</head>
+<body>
+    <h1>Athletes Data Visualization</h1>
+    <div id="chart"></div>
+    <script>
+        fetch('/dataset/athletes')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // For debugging, remove this in production
+                
+                // Ensure the data is being fetched correctly
+                if (!data.length) {
+                    console.error('No data received');
+                    return;
+                }
+
+                // Set up SVG dimensions and margins
+                const margin = {top: 20, right: 30, bottom: 150, left: 200};
+                const width = 1000 - margin.left - margin.right;
+                const height = 600 - margin.top - margin.bottom;
+
+                // Append the SVG object to the body of the page
+                const svg = d3.select("#chart")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+                // Process the data
+                const countries = Array.from(new Set(data.map(d => d.country)));
+                const disciplines = Array.from(new Set(data.map(d => d.discipline)));
+                const athleteCounts = data.map(d => +d.athlete_count);
+
+                // Add X axis
+                const x = d3.scaleBand()
+                    .domain(disciplines)
+                    .range([0, width])
+                    .padding(1);
+                svg.append("g")
+                    .attr("transform", `translate(0,${height})`)
+                    .call(d3.axisBottom(x).tickSize(0))
+                    .selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("dx", "-.8em")
+                    .attr("dy", ".15em")
+                    .attr("transform", "rotate(-)");
+
+                // Add Y axis
+                const y = d3.scaleBand()
+                    .domain(countries)
+                    .range([height, 0])
+                    .padding(1);
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                // Add dots
+                svg.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", d => x(d.discipline))
+                    .attr("cy", d => y(d.country))
+                    .attr("r", d => Math.sqrt(d.athlete_count) * 2)
+                    .style("fill", "#69b3a2")
+                    .style("opacity", "0.7")
+                    .attr("stroke", "black");
+
+                // Add tooltip
+                const tooltip = d3.select("body")
+                    .append("div")
+                    .style("position", "absolute")
+                    .style("visibility", "hidden")
+                    .style("background", "#f9f9f9")
+                    .style("border", "1px solid #d3d3d3")
+                    .style("padding", "10px")
+                    .style("border-radius", "5px");
+
+                svg.selectAll("circle")
+                    .on("mouseover", (event, d) => {
+                        tooltip.html(`<strong>Country:</strong> ${d.country}<br><strong>Discipline:</strong> ${d.discipline}<br><strong>Athletes:</strong> ${d.athlete_count}`)
+                            .style("visibility", "visible");
+                    })
+                    .on("mousemove", (event) => {
+                        tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+                    })
+                    .on("mouseout", () => {
+                        tooltip.style("visibility", "hidden");
+                    });
+            })
+            .catch(error => console.error('Error loading the data:', error));
+    </script>
+</body>
+</html>

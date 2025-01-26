@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Olympics Almanac</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            background-image: url('./static/images/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            height: 100vh;
+        }
+        .contact-us {
+            position: absolute;
+            top: 20px; /* 调整图片距离顶部的距离 */
+            left: 40px; /* 调整图片距离左侧的距离 */
+            width: 140px; /* 设置图片宽度 */
+            height: auto; /* 让高度根据宽度自动调整 */
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .learn-more {
+            position: absolute;
+            bottom: 190px; /* 调整图片距离底部的距离 */
+            right: 213px; /* 调整图片距离右侧的距离 */
+            width: 190px; /* 设置图片宽度 */
+            height: auto; /* 让高度根据宽度自动调整 */
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .contact-us img,
+        .learn-more img {
+            cursor: pointer;
+            width: 100%; /* 让图片填满其容器 */
+            height: auto; /* 保持图片比例 */
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-us" onclick="window.location.href='contact'">
+        <img src="./static/images/contact_us.png" alt="contact-us">
+    </div>
+    <div class="learn-more" onclick="window.location.href='index'">
+        <img src="./static/images/learn_more.png" alt="learn-more">
+    </div>
+</body>
+</html>

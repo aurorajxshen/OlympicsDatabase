@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympic Century Almanac</title>
+    <style>
+        @font-face {
+    font-family: 'Sporty';
+    src: url('{{ url_for('static', filename='sporty-font/Sporty-xPn5.ttf') }}') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+        body {
+            margin:0;
+            font-family: Arial, sporty-font;
+            background-color: #f0f0f0;
+            background-image: url('./static/images/background3.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            width:80%;
+            max-width: 800px;
+            margin:0 auto;
+        }
+
+        .title{
+            position:absolute;
+            top:30px;
+            left:50%;
+            transform: translateX(-50%);
+            font-family: 'Sporty, Arial, sans-serif;';
+        }
+
+        .main{
+            width:100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: block;
+            width:100%;
+            max-width: 300px;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+
+        .nav-item:nth-child(1) {
+            background-color: #f8d7da;
+        }
+        .nav-item:nth-child(2) {
+            background-color: #d1ecf1;
+        }
+        .nav-item:nth-child(3) {
+            background-color: #fff3cd;
+        }
+        .nav-item:nth-child(4) {
+            background-color: #d4edda;
+        }
+        .nav-items a:hover {
+            background-color: #ddd;
+        }
+
+        .my_form{
+            position:absolute;
+            top:600px;
+            text-align: center;
+            margin-bottom:20px;
+        }
+
+        .interest-form {
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 80%;
+            max-width: 400px;
+            height: 50px;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 80px;
+            right: 150px;
+            background-color: #ffd889;
+            padding: 10px;
+            border: 1px solid #ffd889;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>奥运世纪年鉴 - Olympic Century Almanac</h1>
+        </div>
+        <div class="main">
+            <div class="nav">
+                <a class="nav-item" href="athletes2.html">Athletes</a>
+                <a class="nav-item" href="colors2.html">Colours</a>
+                <a class="nav-item" href="medals.html">Medals</a>
+                <a class="nav-item" href="year-selection.html">Dishes</a>
+            </div>
+        </div>
+    </div>
+    <div class="my_form">
+        <form action="/submit_interest" method="post">
+            <label for="interest">What are you interested in?</label><br>
+            <textarea id="interest" name="interest" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+     <div class="feedbacks">
+            {% for feedback in feedbacks %}
+                <div class="feedback-item">{{ feedback.text }}</div>
+            {% endfor %}
+    </div>
+    <div class="back-to-home">
+        <a href="/home" style="text-decoration: none; color: black;">BACK</a>
+    </div>
+</body>
+</html>
